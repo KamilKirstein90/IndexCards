@@ -1,9 +1,10 @@
-package com.kamilkirstein.indexcards;
+package com.kamilkirstein.indexcards.ui;
 
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+import com.kamilkirstein.indexcards.R;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;

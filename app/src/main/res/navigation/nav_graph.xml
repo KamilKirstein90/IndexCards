@@ -7,22 +7,38 @@
 
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="com.kamilkirstein.indexcards.ui.FirstFragment"
+        android:name="com.kamilkirstein.indexcards.ui.ShowIndexCardCategoriesFragment"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_first">
 
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
             app:destination="@id/SecondFragment" />
+        <action
+            android:id="@+id/action_FirstFragment_to_editIndexCard"
+            app:destination="@id/editIndexCard"
+            app:enterAnim="@anim/fragment_open_enter" />
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
-        android:name="com.kamilkirstein.indexcards.ui.SecondFragment"
+        android:name="com.kamilkirstein.indexcards.ui.ShowIndexCardsFragement"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_second">
 
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"
+            app:destination="@id/FirstFragment" />
+        <action
+            android:id="@+id/action_SecondFragment_to_editIndexCard"
+            app:destination="@id/editIndexCard" />
+    </fragment>
+    <fragment
+        android:id="@+id/editIndexCard"
+        android:name="com.kamilkirstein.indexcards.ui.EditIndexCard"
+        android:label="fragment_edit_index_card"
+        tools:layout="@layout/fragment_edit_index_card" >
+        <action
+            android:id="@+id/action_editIndexCard_to_FirstFragment"
             app:destination="@id/FirstFragment" />
     </fragment>
 </navigation>

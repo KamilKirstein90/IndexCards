@@ -19,7 +19,15 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+
     <style name="Theme.IndexCards.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.IndexCards.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name ="LabelText" parent="@android:style/TextAppearance">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/lblTextGrey</item>
+    </style>
+
 </resources>

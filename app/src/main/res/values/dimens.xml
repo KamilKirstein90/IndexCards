@@ -1,3 +1,4 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="lbl_textSize">12sp</dimen>
 </resources>

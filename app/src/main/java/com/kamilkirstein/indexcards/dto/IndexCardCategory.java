@@ -1,12 +1,13 @@
 package com.kamilkirstein.indexcards.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class IndexCardCategory {
 
     int id = 0;
     String name;
-    List<IndexCard> idxCards;
+    List<IndexCard> idxCards = new ArrayList<IndexCard>();
 
     public IndexCardCategory() {
 

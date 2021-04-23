@@ -10,16 +10,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.kamilkirstein.indexcards.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link EditIndexCard#newInstance} factory method to
+ * Use the {@link EditIndexCardFrg#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class EditIndexCard extends Fragment {
+public class EditIndexCardFrg extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -30,7 +29,7 @@ public class EditIndexCard extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public EditIndexCard() {
+    public EditIndexCardFrg() {
         // Required empty public constructor
     }
 
@@ -43,8 +42,8 @@ public class EditIndexCard extends Fragment {
      * @return A new instance of fragment EditIndexCard.
      */
     // TODO: Rename and change types and number of parameters
-    public static EditIndexCard newInstance(String param1, String param2) {
-        EditIndexCard fragment = new EditIndexCard();
+    public static EditIndexCardFrg newInstance(String param1, String param2) {
+        EditIndexCardFrg fragment = new EditIndexCardFrg();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -55,7 +54,6 @@ public class EditIndexCard extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -72,7 +70,7 @@ public class EditIndexCard extends Fragment {
         String name = null;
 
         if (getArguments() != null) {
-            name = EditIndexCardArgs.fromBundle(getArguments()).getCardName();
+            name = EditIndexCardFrgArgs.fromBundle(getArguments()).getCardName();
         }
 
         EditText etCardName = view.findViewById(R.id.et_IndexCardName);

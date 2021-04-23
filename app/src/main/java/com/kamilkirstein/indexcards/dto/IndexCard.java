@@ -1,5 +1,7 @@
 package com.kamilkirstein.indexcards.dto;
 
+import java.util.Date;
+
 public class IndexCard {
 
     int id = 0;
@@ -8,10 +10,11 @@ public class IndexCard {
     String question;
     int categoryId = 0;
     int rating = 0;
+    Date timeStamp;
+
     //TODO image class for answer and question will be implemented later
     // Image answerImg
     // Image questionImg
-
 
     public IndexCard() {
         clearData();
@@ -24,6 +27,7 @@ public class IndexCard {
         question = "";
         categoryId = 0;
         rating = 0;
+        timeStamp = null;
     }
 
     public int getId() {
@@ -73,4 +77,8 @@ public class IndexCard {
     public void setRating(int rating) {
         this.rating = rating;
     }
+
+    public Date getTimeStamp() { return timeStamp; }
+
+    public void setTimeStamp(Date timeStamp) { this.timeStamp = timeStamp; }
 }

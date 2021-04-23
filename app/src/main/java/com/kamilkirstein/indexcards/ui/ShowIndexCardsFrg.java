@@ -11,7 +11,7 @@ import androidx.navigation.fragment.NavHostFragment;
 
 import com.kamilkirstein.indexcards.R;
 
-public class ShowIndexCardsFragement extends Fragment {
+public class ShowIndexCardsFrg extends Fragment {
 
     @Override
     public View onCreateView(
@@ -28,7 +28,7 @@ public class ShowIndexCardsFragement extends Fragment {
         view.findViewById(R.id.button_second).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NavHostFragment.findNavController(ShowIndexCardsFragement.this)
+                NavHostFragment.findNavController(ShowIndexCardsFrg.this)
                         .navigate(R.id.action_SecondFragment_to_FirstFragment);
             }
         });

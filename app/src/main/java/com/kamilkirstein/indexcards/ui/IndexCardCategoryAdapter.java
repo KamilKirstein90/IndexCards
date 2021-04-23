@@ -40,7 +40,7 @@ public class IndexCardCategoryAdapter extends RecyclerView.Adapter<IndexCardCate
         if (mContainer != null)
         {
             holder.mTvName.setText(mContainer.get(position).getName());
-            holder.mTVAmountOfCards.setText(mContainer.get(position).getIdxCards().size());
+            holder.mTVAmountOfCards.setText(String.valueOf(mContainer.get(position).getIdxCards().size()));
         }
 
     }

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/FirstFragment"
-        android:name="com.kamilkirstein.indexcards.ui.ShowIndexCardCategoriesFragment"
+        android:name="com.kamilkirstein.indexcards.ui.ShowIndexCardCategoriesFrg"
         android:label="@string/first_fragment_label"
         tools:layout="@layout/fragment_first">
 
@@ -24,7 +24,7 @@
     </fragment>
     <fragment
         android:id="@+id/SecondFragment"
-        android:name="com.kamilkirstein.indexcards.ui.ShowIndexCardsFragement"
+        android:name="com.kamilkirstein.indexcards.ui.ShowIndexCardsFrg"
         android:label="@string/second_fragment_label"
         tools:layout="@layout/fragment_second">
 
@@ -37,7 +37,7 @@
     </fragment>
     <fragment
         android:id="@+id/editIndexCard"
-        android:name="com.kamilkirstein.indexcards.ui.EditIndexCard"
+        android:name="com.kamilkirstein.indexcards.ui.EditIndexCardFrg"
         android:label="fragment_edit_index_card"
         tools:layout="@layout/fragment_edit_index_card" >
         <action

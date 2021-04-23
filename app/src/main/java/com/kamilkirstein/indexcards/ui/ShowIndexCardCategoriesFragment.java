@@ -31,8 +31,12 @@ public class ShowIndexCardCategoriesFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                NavHostFragment.findNavController(ShowIndexCardCategoriesFragment.this)
-                        .navigate(R.id.action_FirstFragment_to_editIndexCard);
+
+                ShowIndexCardCategoriesFragmentDirections.ActionFirstFragmentToEditIndexCard action =
+                       ShowIndexCardCategoriesFragmentDirections.actionFirstFragmentToEditIndexCard("Test1");
+
+               NavHostFragment.findNavController(ShowIndexCardCategoriesFragment.this)
+                        .navigate(action);
 
 
             }

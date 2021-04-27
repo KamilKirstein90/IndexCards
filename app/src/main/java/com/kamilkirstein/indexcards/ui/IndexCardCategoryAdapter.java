@@ -29,7 +29,6 @@ public class IndexCardCategoryAdapter extends RecyclerView.Adapter<IndexCardCate
     @NonNull
     @Override
     public IndexCardCategoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
         View view = mInflater.inflate(R.layout.item_indexcardcategory, parent, false);
         return  new IndexCardCategoryViewHolder(view);
     }

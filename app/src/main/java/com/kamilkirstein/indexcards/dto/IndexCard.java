@@ -39,7 +39,7 @@ public class IndexCard {
     //TODO room don´t know how to safe a date field into the db ...
     @NonNull
     @ColumnInfo(name ="timeStamp")
-    Date timeStamp;
+    String timeStamp;
 
     //TODO image class for answer and question will be implemented later
     // Image answerImg
@@ -107,7 +107,7 @@ public class IndexCard {
         this.rating = rating;
     }
 
-    public Date getTimeStamp() { return timeStamp; }
+    public String getTimeStamp() { return timeStamp; }
 
-    public void setTimeStamp(Date timeStamp) { this.timeStamp = timeStamp; }
+    public void setTimeStamp(String timeStamp) { this.timeStamp = timeStamp; }
 }

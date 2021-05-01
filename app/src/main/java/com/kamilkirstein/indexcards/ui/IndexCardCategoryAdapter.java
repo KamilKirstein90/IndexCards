@@ -16,7 +16,6 @@ import com.kamilkirstein.indexcards.dto.IndexCardCategory;
 import org.w3c.dom.Text;
 import java.util.List;
 
-
 public class IndexCardCategoryAdapter extends RecyclerView.Adapter<IndexCardCategoryAdapter.IndexCardCategoryViewHolder> {
 
     private List<IndexCardCategory> mContainer;
@@ -35,13 +34,11 @@ public class IndexCardCategoryAdapter extends RecyclerView.Adapter<IndexCardCate
 
     @Override
     public void onBindViewHolder(@NonNull IndexCardCategoryViewHolder holder, int position) {
-
         if (mContainer != null)
         {
             holder.mTvName.setText(mContainer.get(position).getName());
             holder.mTVAmountOfCards.setText(String.valueOf(mContainer.get(position).getIdxCards().size()));
         }
-
     }
 
     void setmContainer(List<IndexCardCategory> container)

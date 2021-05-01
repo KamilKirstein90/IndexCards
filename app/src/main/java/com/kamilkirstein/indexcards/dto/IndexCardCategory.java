@@ -3,6 +3,7 @@ package com.kamilkirstein.indexcards.dto;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import java.util.ArrayList;
@@ -21,6 +22,7 @@ public class IndexCardCategory {
     @ColumnInfo(name ="name")
     String name;
 
+    @Ignore
     List<IndexCard> idxCards = new ArrayList<IndexCard>();
 
     public IndexCardCategory() {

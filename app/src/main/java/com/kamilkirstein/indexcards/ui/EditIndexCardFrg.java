@@ -5,13 +5,23 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.kamilkirstein.indexcards.R;
+import com.kamilkirstein.indexcards.dto.IndexCardCategory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,13 +34,27 @@ public class EditIndexCardFrg extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    Spinner spinner;
+    private IndexCardCategorySpinnerAdapter adapter;
+    private ShowIndexCardCategoriesViewModel viewModel;
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    List <IndexCardCategory> categories;
+    Button btnSave;
 
     public EditIndexCardFrg() {
         // Required empty public constructor
+    }
+
+    public  List<IndexCardCategory> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<IndexCardCategory> categories) {
+        this.categories = categories;
     }
 
     /**
@@ -54,26 +78,59 @@ public class EditIndexCardFrg extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        categories = new ArrayList<IndexCardCategory>();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-           return inflater.inflate(R.layout.fragment_edit_index_card, container, false);
+          return inflater.inflate(R.layout.fragment_edit_index_card, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        // ************************************************** Test for Args *******************************************************
         String name = null;
-
         if (getArguments() != null) {
             name = EditIndexCardFrgArgs.fromBundle(getArguments()).getCardName();
         }
-
         EditText etCardName = view.findViewById(R.id.et_IndexCardName);
         etCardName.setText(name);
+
+        // **************************************** spinner adapter ****************************************
+        spinner = view.findViewById(R.id.sp_category);
+        adapter = new IndexCardCategorySpinnerAdapter(view.getContext(),R.layout.category_spinner_adapter);
+        spinner.setAdapter(adapter);
+
+        // ***************************************************** view Model to get data from the db ********************************
+        viewModel = new ViewModelProvider(this).get(ShowIndexCardCategoriesViewModel.class);
+        viewModel.getIndexCardCategories().observe(getViewLifecycleOwner(), new Observer<List<IndexCardCategory>>() {
+            @Override
+            public void onChanged(List<IndexCardCategory> indexCardCategories) {
+                // in herer we pass the container from the db to the adapter
+                adapter.setmContainer(indexCardCategories);
+                adapter.notifyDataSetChanged();
+
+                setCategories(indexCardCategories);
+            }
+        });
+
+
+        // ****************************************************** save button later to write into the db***********************************
+        btnSave = view.findViewById(R.id.btn_saveCard);
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(view.getContext(), String.valueOf(getCategories().size()), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+    }
+
+    public void initEditIndexCard(){
+
     }
 }

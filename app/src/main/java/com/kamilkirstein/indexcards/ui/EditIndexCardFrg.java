@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -103,6 +104,23 @@ public class EditIndexCardFrg extends Fragment {
         spinner = view.findViewById(R.id.sp_category);
         adapter = new IndexCardCategorySpinnerAdapter(view.getContext(),R.layout.category_spinner_adapter);
         spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
+            {
+                if(position == parent.getCount()-1)
+                {
+                    Toast.makeText(view.getContext(),"Neue Kategorie", Toast.LENGTH_SHORT).show();
+                    //TODO here dialog where a new category can be created
+
+                }
+            } // to close the onItemSelected
+            public void onNothingSelected(AdapterView<?> parent)
+            {
+
+            }
+        });
 
         // ***************************************************** view Model to get data from the db ********************************
         viewModel = new ViewModelProvider(this).get(ShowIndexCardCategoriesViewModel.class);

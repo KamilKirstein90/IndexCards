@@ -17,6 +17,7 @@ import com.kamilkirstein.indexcards.dto.IndexCardCategory;
 import org.w3c.dom.Text;
 
 import java.util.List;
+import java.util.Locale;
 
 public class IndexCardCategorySpinnerAdapter extends ArrayAdapter<IndexCardCategory> {
 
@@ -25,6 +26,12 @@ public class IndexCardCategorySpinnerAdapter extends ArrayAdapter<IndexCardCateg
 
     public void setmContainer(List<IndexCardCategory> mContainer) {
         this.mContainer = mContainer;
+        // the container has always an item on the last place
+
+        String sNewCategory = "New Category";
+        IndexCardCategory newCategory = new IndexCardCategory();
+        newCategory.setName(sNewCategory);
+        this.mContainer.add(newCategory);
     }
 
     public IndexCardCategorySpinnerAdapter(@NonNull Context context, int resource) {

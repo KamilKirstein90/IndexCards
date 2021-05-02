@@ -1,14 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal">
 
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cV_indexCard_answer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:shape="ring"
+        app:cardCornerRadius="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        app:strokeColor="@color/orange"
+        app:strokeWidth="2dp"
+        android:padding="15dp"
+        >
+
     <TextView
+        android:padding="10dp"
         android:id="@+id/tv_spinnerCategoryItem"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        ></TextView>
+        android:textSize="24sp"></TextView>
+    </com.google.android.material.card.MaterialCardView>
+
 
 </LinearLayout>

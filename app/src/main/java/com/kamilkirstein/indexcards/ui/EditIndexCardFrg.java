@@ -112,7 +112,9 @@ public class EditIndexCardFrg extends Fragment {
                 if(position == parent.getCount()-1)
                 {
                     Toast.makeText(view.getContext(),"Neue Kategorie", Toast.LENGTH_SHORT).show();
-                    //TODO here dialog where a new category can be created
+                    CreateNewCategoryDialog dlg = new CreateNewCategoryDialog();
+                    // here i take the getParentFragmentManager the getSupportFragmentManager is not supportet inside a fragment and the get FragmentManager is debricated
+                    dlg.show(getParentFragmentManager(),"Create a new category dialog");
 
                 }
             } // to close the onItemSelected

@@ -109,14 +109,15 @@ public class EditIndexCardFrg extends Fragment {
         {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
             {
-                if(position == parent.getCount()-1)
-                {
-                    Toast.makeText(view.getContext(),"Neue Kategorie", Toast.LENGTH_SHORT).show();
-                    CreateNewCategoryDialog dlg = new CreateNewCategoryDialog();
-                    // here i take the getParentFragmentManager the getSupportFragmentManager is not supportet inside a fragment and the get FragmentManager is debricated
-                    dlg.show(getParentFragmentManager(),"Create a new category dialog");
-
+                if(position == parent.getCount()-1) {
+                    Toast.makeText(view.getContext(), "Neue Kategorie", Toast.LENGTH_SHORT).show();
+                    // use the static new instance method to create a new dialog
+                    CreateNewCategoryDialog dlg = CreateNewCategoryDialog.newInstance("Create a new Cateogry");
+                    // here i take the getParentFragmentManager the getSupportFragmentManager is not supportet inside a fragment and the get FragmentManager is debricate
+                    dlg.show(getParentFragmentManager(), "Create a new category dialog");
                 }
+
+
             } // to close the onItemSelected
             public void onNothingSelected(AdapterView<?> parent)
             {

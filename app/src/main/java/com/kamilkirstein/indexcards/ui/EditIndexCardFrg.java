@@ -31,6 +31,10 @@ import java.util.List;
  */
 public class EditIndexCardFrg extends Fragment {
 
+    //TODO Kamil Check this out for dynamicaly programm fragments inside a fragment
+    //    https://stackoverflow.com/questions/16728426/android-nested-fragment-approach
+
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";

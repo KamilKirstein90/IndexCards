@@ -2,11 +2,19 @@ package com.kamilkirstein.indexcards.ui;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.fragment.NavHostFragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.kamilkirstein.indexcards.R;
 
@@ -21,9 +29,12 @@ public class EditIndexCardFrgChild extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private Button btnSwitch;
+    private EditText etAQInput;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
+
     private String mParam2;
 
     public EditIndexCardFrgChild() {
@@ -62,5 +73,24 @@ public class EditIndexCardFrgChild extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_edit_index_card_frg_child, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        btnSwitch = view.findViewById(R.id.btnSwitchAQ);
+        btnSwitch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "try to switch", Toast.LENGTH_LONG).show();
+
+                // this is called from the child fragment but the dastination is still the parent fragment now go from parent to child
+                EditIndexCardFrgDirections.ActionEditIndexCardToEditIndexCardFrgChild action =
+                        EditIndexCardFrgDirections.actionEditIndexCardToEditIndexCardFrgChild("Test");
+
+                NavHostFragment.findNavController(EditIndexCardFrgChild.this)
+                        .navigate(action);
+            }
+        });
+        etAQInput = view.findViewById(R.id.eT_indexCardAnwser);
     }
 }

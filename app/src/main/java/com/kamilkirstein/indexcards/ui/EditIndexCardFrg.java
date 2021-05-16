@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -50,6 +51,7 @@ public class EditIndexCardFrg extends Fragment {
     List <IndexCardCategory> categories;
     Button btnSave;
 
+
     public EditIndexCardFrg() {
         // Required empty public constructor
     }
@@ -89,8 +91,22 @@ public class EditIndexCardFrg extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-          return inflater.inflate(R.layout.fragment_edit_index_card, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_edit_index_card, container, false);
+
+        // this gives us the childfragment back if there is allready one in the parent fragment
+        EditIndexCardFrgChild editIndexCardChildFrg  = (EditIndexCardFrgChild) getChildFragmentManager().findFragmentById(R.id.fl_editICFrgHolder);
+
+    // add the child fragment to the framelayout
+        if (null == editIndexCardChildFrg) {
+            editIndexCardChildFrg = new EditIndexCardFrgChild();
+            FragmentTransaction transaction = getChildFragmentManager()
+                    .beginTransaction();
+
+            transaction.add(R.id.fl_editICFrgHolder, editIndexCardChildFrg)
+                    .addToBackStack(null).commit();
+        }
+
+          return rootView;
     }
 
     @Override

@@ -9,7 +9,6 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +19,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.kamilkirstein.indexcards.R;
+import com.kamilkirstein.indexcards.dto.IndexCard;
 import com.kamilkirstein.indexcards.dto.IndexCardCategory;
 
 import java.util.ArrayList;
@@ -32,60 +32,51 @@ import java.util.List;
  */
 public class EditIndexCardFrg extends Fragment {
 
-    //TODO Kamil Check this out for dynamicaly programm fragments inside a fragment
+    //TODO Kamil Check this out for dynamicaly programfragments inside a fragment
     //    https://stackoverflow.com/questions/16728426/android-nested-fragment-approach
 
-
     // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_CARD_ID = "IndexCardId";
+
     Spinner spinner;
     private IndexCardCategorySpinnerAdapter adapter;
     private ShowIndexCardCategoriesViewModel viewModel;
+    private List<IndexCardCategory> mCategories;
 
+    private int    mArgCardId = 0;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-    List <IndexCardCategory> categories;
-    Button btnSave;
-
+    private EditText etCardName;
+    private IndexCard mCard;
+    //TODO: create a IndexCardViewModel
+    private Button btnSave;
+    private Button btnSwitch;
 
     public EditIndexCardFrg() {
         // Required empty public constructor
     }
 
-    public  List<IndexCardCategory> getCategories() {
-        return categories;
-    }
-
-    public void setCategories(List<IndexCardCategory> categories) {
-        this.categories = categories;
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment EditIndexCard.
-     */
     // TODO: Rename and change types and number of parameters
-    public static EditIndexCardFrg newInstance(String param1, String param2) {
+    public static EditIndexCardFrg newInstance(int indexCardId) {
         EditIndexCardFrg fragment = new EditIndexCardFrg();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putInt(ARG_CARD_ID, indexCardId);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    public  List<IndexCardCategory> getmCategories() {
+        return mCategories;
+    }
+
+    public void setmCategories(List<IndexCardCategory> mCategories) {
+        this.mCategories = mCategories;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        categories = new ArrayList<IndexCardCategory>();
+        mCategories = new ArrayList<IndexCardCategory>();
+        mCard = new IndexCard();
     }
 
     @Override
@@ -93,10 +84,10 @@ public class EditIndexCardFrg extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_edit_index_card, container, false);
 
-        // this gives us the childfragment back if there is allready one in the parent fragment
+        // this gives us the child fragment back if there is already one in the parent fragment
         EditIndexCardFrgChild editIndexCardChildFrg  = (EditIndexCardFrgChild) getChildFragmentManager().findFragmentById(R.id.fl_editICFrgHolder);
 
-    // add the child fragment to the framelayout
+        // add the child fragment to the frame layout
         if (null == editIndexCardChildFrg) {
             editIndexCardChildFrg = new EditIndexCardFrgChild();
             FragmentTransaction transaction = getChildFragmentManager()
@@ -112,19 +103,49 @@ public class EditIndexCardFrg extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        // ************************************************** Test for Args *******************************************************
-        String name = null;
-        if (getArguments() != null) {
-            name = EditIndexCardFrgArgs.fromBundle(getArguments()).getCardName();
-        }
-        EditText etCardName = view.findViewById(R.id.et_IndexCardName);
-        etCardName.setText(name);
 
-        // **************************************** spinner adapter ****************************************
+        // ************************************************** Test for Args *******************************************************
+        if (getArguments() != null) {
+            mArgCardId = savedInstanceState.getInt(ARG_CARD_ID);
+
+            if (mArgCardId > 0)
+            {
+                // if this is right I will get index card for the id from the db and the fragment is for editing a consisting index card
+
+            }
+        }
+        
+        setUpEditTexts(view);
+
+        setUpSpinnerAndAdapter(view);
+
+        setUpButtons(view);
+        
+
+        // ***************************************************** view Model to get data from the db ********************************
+        viewModel = new ViewModelProvider(this).get(ShowIndexCardCategoriesViewModel.class);
+        viewModel.getIndexCardCategories().observe(getViewLifecycleOwner(), new Observer<List<IndexCardCategory>>() {
+            @Override
+            public void onChanged(List<IndexCardCategory> indexCardCategories) {
+
+                // in here we pass the container from the db to the adapter
+                adapter.setmContainer(indexCardCategories);
+                adapter.notifyDataSetChanged();
+                setmCategories(indexCardCategories);
+            }
+        });
+
+
+    }
+    
+    private void setUpEditTexts(@NonNull View view){
+        EditText etCardName = view.findViewById(R.id.et_IndexCardName);
+    }
+
+    private void setUpSpinnerAndAdapter(@NonNull View view){
         spinner = view.findViewById(R.id.sp_category);
         adapter = new IndexCardCategorySpinnerAdapter(view.getContext(),R.layout.category_spinner_adapter);
         spinner.setAdapter(adapter);
-
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id)
@@ -137,41 +158,75 @@ public class EditIndexCardFrg extends Fragment {
                     dlg.show(getParentFragmentManager(), "Create a new category dialog");
                 }
 
-
             } // to close the onItemSelected
             public void onNothingSelected(AdapterView<?> parent)
             {
 
             }
         });
+    }
 
-        // ***************************************************** view Model to get data from the db ********************************
-        viewModel = new ViewModelProvider(this).get(ShowIndexCardCategoriesViewModel.class);
-        viewModel.getIndexCardCategories().observe(getViewLifecycleOwner(), new Observer<List<IndexCardCategory>>() {
-            @Override
-            public void onChanged(List<IndexCardCategory> indexCardCategories) {
-                // in herer we pass the container from the db to the adapter
-                adapter.setmContainer(indexCardCategories);
-                adapter.notifyDataSetChanged();
-
-                setCategories(indexCardCategories);
-            }
-        });
-
+    private void setUpButtons(@NonNull View view){
 
         // ****************************************************** save button later to write into the db***********************************
         btnSave = view.findViewById(R.id.btn_saveCard);
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(view.getContext(), String.valueOf(getCategories().size()), Toast.LENGTH_SHORT).show();
+                Toast.makeText(view.getContext(), String.valueOf(getmCategories().size()), Toast.LENGTH_SHORT).show();
+
             }
         });
 
+        // **************************************************** switch button to change between the question and the answer fragment**************************
+        btnSwitch = view.findViewById(R.id.btnSwitchAQ);
+        btnSwitch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "try to switch", Toast.LENGTH_LONG).show();
+
+                // replace current fragment in the frame layout with a new one
+
+                EditIndexCardFrgChild newChildFrg = EditIndexCardFrgChild.newInstance("Question", "Answer");
+
+                FragmentTransaction transaction = getChildFragmentManager()
+                        .beginTransaction();
+
+                transaction.setCustomAnimations(R.anim.card_flip_left_in, R.anim.card_flip_left_out, R.anim.card_flip_right_in, R.anim.card_flip_right_out);
+                transaction.replace(R.id.fl_editICFrgHolder, newChildFrg)
+                        .addToBackStack(null).commit();
+            }
+        });
 
     }
 
-    public void initEditIndexCard(){
+    // check if the input for the index card is valid, not empty
+    private boolean checkInput(){
 
+        if(mCard.getName().isEmpty())
+        {
+            Toast.makeText(getContext(), "Please set a card name.", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        if(mCard.getCategoryId() == 0)
+        {
+            Toast.makeText(getContext(), "Please choose a card category.", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        if(mCard.getQuestion().isEmpty())
+        {
+            Toast.makeText(getContext(), "Please set a Question.", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        if(mCard.getAnswer().isEmpty())
+        {
+            Toast.makeText(getContext(), "Please set an answer.", Toast.LENGTH_LONG).show();
+            return false;
+        }
+
+        return true;
     }
 }

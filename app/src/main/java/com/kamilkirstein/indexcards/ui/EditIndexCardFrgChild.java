@@ -29,12 +29,13 @@ public class EditIndexCardFrgChild extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    private Button btnSwitch;
+    private static final String ARG_ANSWER   = "IndexCardAnswerValue";
+    private static final String ARG_QUESTION = "IndexCardQuestionValue";
+
     private EditText etAQInput;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
-
     private String mParam2;
 
     public EditIndexCardFrgChild() {
@@ -77,20 +78,8 @@ public class EditIndexCardFrgChild extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        btnSwitch = view.findViewById(R.id.btnSwitchAQ);
-        btnSwitch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(), "try to switch", Toast.LENGTH_LONG).show();
-
-                // this is called from the child fragment but the dastination is still the parent fragment now go from parent to child
-                EditIndexCardFrgDirections.ActionEditIndexCardToEditIndexCardFrgChild action =
-                        EditIndexCardFrgDirections.actionEditIndexCardToEditIndexCardFrgChild("Test");
-
-                NavHostFragment.findNavController(EditIndexCardFrgChild.this)
-                        .navigate(action);
-            }
-        });
         etAQInput = view.findViewById(R.id.eT_indexCardAnwser);
+        if (mParam1 != null)
+            etAQInput.setText(mParam1);
     }
 }

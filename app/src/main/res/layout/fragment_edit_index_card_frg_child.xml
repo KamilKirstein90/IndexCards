@@ -47,19 +47,4 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 
-    <LinearLayout
-        android:id="@+id/lL_EditIndexCardsButtonLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="5dp">
-
-        <Button
-            android:id="@+id/btnSwitchAQ"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/lbl_btnQASwitch"/>
-    </LinearLayout>
-
 </LinearLayout>

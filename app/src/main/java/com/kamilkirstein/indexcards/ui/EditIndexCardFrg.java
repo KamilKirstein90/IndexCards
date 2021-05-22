@@ -105,7 +105,7 @@ public class EditIndexCardFrg extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // ************************************************** Test for Args *******************************************************
-        if (getArguments() != null) {
+        if (getArguments() != null && savedInstanceState != null) {
             mArgCardId = savedInstanceState.getInt(ARG_CARD_ID);
 
             if (mArgCardId > 0)

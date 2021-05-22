@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.kamilkirstein.indexcards.NavGraphDirections;
 import com.kamilkirstein.indexcards.R;
 import com.kamilkirstein.indexcards.dto.IndexCardCategory;
 
@@ -22,7 +23,6 @@ import java.util.List;
 public class ShowIndexCardCategoriesFrg extends Fragment {
 
     private RecyclerView rvCategories;
-    private FloatingActionButton fab;
     private IndexCardCategoryAdapter adapter;
     private ShowIndexCardCategoriesViewModel viewModel;
 
@@ -55,19 +55,6 @@ public class ShowIndexCardCategoriesFrg extends Fragment {
         adapter = new IndexCardCategoryAdapter(view.getContext());
         rvCategories.setAdapter(adapter);
         rvCategories.setLayoutManager(new LinearLayoutManager(view.getContext()));
-
-        fab = view.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                ShowIndexCardCategoriesFrgDirections.ActionFirstFragmentToEditIndexCard action =
-                       ShowIndexCardCategoriesFrgDirections.actionFirstFragmentToEditIndexCard("Test1");
-
-               NavHostFragment.findNavController(ShowIndexCardCategoriesFrg.this)
-                        .navigate(action);
-            }
-        });
 
     }
 }

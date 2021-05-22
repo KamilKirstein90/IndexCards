@@ -19,18 +19,13 @@ public class ShowIndexCardsFrg extends Fragment {
             Bundle savedInstanceState
     ) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_second, container, false);
+        //TODO: create the layout for the ShowIndexCardsFrg
+        //return inflater.inflate(R.layout.fragment_second, container, false);
+        return getView();
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        view.findViewById(R.id.button_second).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                NavHostFragment.findNavController(ShowIndexCardsFrg.this)
-                        .navigate(R.id.action_SecondFragment_to_FirstFragment);
-            }
-        });
     }
 }

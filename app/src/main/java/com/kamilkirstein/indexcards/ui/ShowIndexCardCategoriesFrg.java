@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -18,9 +17,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.kamilkirstein.indexcards.R;
 import com.kamilkirstein.indexcards.dto.IndexCardCategory;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class ShowIndexCardCategoriesFrg extends Fragment {
 
@@ -35,7 +32,7 @@ public class ShowIndexCardCategoriesFrg extends Fragment {
             Bundle savedInstanceState
     ) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_first, container, false);
+        return inflater.inflate(R.layout.fragment_show_card_categories, container, false);
     }
 
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {

@@ -25,4 +25,9 @@
         android:name="com.kamilkirstein.indexcards.ui.ShowIndexCardCategoriesFrg"
         android:label="fragment_show_card_categories"
         tools:layout="@layout/fragment_show_card_categories" />
+    <fragment
+        android:id="@+id/editIndexCardFrgChild"
+        android:name="com.kamilkirstein.indexcards.ui.EditIndexCardFrgChild"
+        android:label="fragment_edit_index_card_frg_child"
+        tools:layout="@layout/fragment_edit_index_card_frg_child" />
 </navigation>

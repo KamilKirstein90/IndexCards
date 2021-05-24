@@ -1,5 +1,6 @@
 package com.kamilkirstein.indexcards.ui;
 
+import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -43,13 +44,20 @@ public class EditIndexCardFrg extends Fragment {
     private ShowIndexCardCategoriesViewModel viewModel;
     private List<IndexCardCategory> mCategories;
 
-    private int    mArgCardId = 0;
 
-    private EditText etCardName;
+    private int       mArgCardId = 0;
+    private EditText  etCardName;
     private IndexCard mCard;
+
     //TODO: create a IndexCardViewModel
     private Button btnSave;
     private Button btnSwitch;
+    private StateOfCard mCardState = StateOfCard.QUESTION;
+
+    public enum StateOfCard{
+        QUESTION ,
+        ANSWER
+    }
 
     public EditIndexCardFrg() {
         // Required empty public constructor
@@ -83,21 +91,9 @@ public class EditIndexCardFrg extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_edit_index_card, container, false);
-
-        // this gives us the child fragment back if there is already one in the parent fragment
-        EditIndexCardFrgChild editIndexCardChildFrg  = (EditIndexCardFrgChild) getChildFragmentManager().findFragmentById(R.id.fl_editICFrgHolder);
-
-        // add the child fragment to the frame layout
-        if (null == editIndexCardChildFrg) {
-            editIndexCardChildFrg = new EditIndexCardFrgChild();
-            FragmentTransaction transaction = getChildFragmentManager()
-                    .beginTransaction();
-
-            transaction.add(R.id.fl_editICFrgHolder, editIndexCardChildFrg)
-                    .addToBackStack(null).commit();
-        }
-
-          return rootView;
+        
+        setUpChildFragment();
+        return rootView;
     }
 
     @Override
@@ -111,16 +107,12 @@ public class EditIndexCardFrg extends Fragment {
             if (mArgCardId > 0)
             {
                 // if this is right I will get index card for the id from the db and the fragment is for editing a consisting index card
-
             }
         }
-        
-        setUpEditTexts(view);
 
+        setUpEditTexts(view);
         setUpSpinnerAndAdapter(view);
 
-        setUpButtons(view);
-        
 
         // ***************************************************** view Model to get data from the db ********************************
         viewModel = new ViewModelProvider(this).get(ShowIndexCardCategoriesViewModel.class);
@@ -135,9 +127,33 @@ public class EditIndexCardFrg extends Fragment {
             }
         });
 
+        MainActivity mainAct = (MainActivity) getActivity();
+        mainAct.setUpTextViewBottomAppbar(this);
+        // TODO get the main act herer to set up a tv listener
 
     }
-    
+
+    private void setUpChildFragment(){
+
+        // the initial state is always the question side
+        mCardState = StateOfCard.QUESTION;
+
+        // check if there is already a child fragment
+        EditIndexCardFrgChild editIndexCardChildFrg  = (EditIndexCardFrgChild) getChildFragmentManager().findFragmentById(R.id.fl_editICFrgHolder);
+
+        // add the child fragment to the frame layout
+        if (null == editIndexCardChildFrg) {
+
+            editIndexCardChildFrg = EditIndexCardFrgChild.newInstance(getLabelBasedOnStateOfCard(), getValueBasedOnStateOfCard());
+            FragmentTransaction transaction = getChildFragmentManager()
+                    .beginTransaction();
+
+            transaction.add(R.id.fl_editICFrgHolder, editIndexCardChildFrg)
+                    .addToBackStack(null).commit();
+        }
+
+    }
+
     private void setUpEditTexts(@NonNull View view){
         EditText etCardName = view.findViewById(R.id.et_IndexCardName);
     }
@@ -164,40 +180,6 @@ public class EditIndexCardFrg extends Fragment {
 
             }
         });
-    }
-
-    private void setUpButtons(@NonNull View view){
-
-        // ****************************************************** save button later to write into the db***********************************
-        btnSave = view.findViewById(R.id.btn_saveCard);
-        btnSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(view.getContext(), String.valueOf(getmCategories().size()), Toast.LENGTH_SHORT).show();
-
-            }
-        });
-
-        // **************************************************** switch button to change between the question and the answer fragment**************************
-        btnSwitch = view.findViewById(R.id.btnSwitchAQ);
-        btnSwitch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(), "try to switch", Toast.LENGTH_LONG).show();
-
-                // replace current fragment in the frame layout with a new one
-
-                EditIndexCardFrgChild newChildFrg = EditIndexCardFrgChild.newInstance("Question", "Answer");
-
-                FragmentTransaction transaction = getChildFragmentManager()
-                        .beginTransaction();
-
-                transaction.setCustomAnimations(R.anim.card_flip_left_in, R.anim.card_flip_left_out, R.anim.card_flip_right_in, R.anim.card_flip_right_out);
-                transaction.replace(R.id.fl_editICFrgHolder, newChildFrg)
-                        .addToBackStack(null).commit();
-            }
-        });
-
     }
 
     // check if the input for the index card is valid, not empty
@@ -228,5 +210,46 @@ public class EditIndexCardFrg extends Fragment {
         }
 
         return true;
+    }
+
+    // this method will be called from "outside" the fragment in the main Act over the current Fragment and then the child fragment
+    public void changeQA(){
+        // first change the state
+        if(mCardState == StateOfCard.ANSWER)
+            mCardState = StateOfCard.QUESTION;
+        else
+            mCardState = StateOfCard.ANSWER;
+
+        EditIndexCardFrgChild newChildFrg = EditIndexCardFrgChild.newInstance(getLabelBasedOnStateOfCard(), getValueBasedOnStateOfCard());
+        FragmentTransaction transaction = getChildFragmentManager()
+                .beginTransaction();
+        transaction.setCustomAnimations(R.anim.card_flip_left_in, R.anim.card_flip_left_out, R.anim.card_flip_right_in, R.anim.card_flip_right_out);
+        transaction.replace(R.id.fl_editICFrgHolder, newChildFrg)
+                .addToBackStack(null).commit();
+    }
+
+    public String getLabelBasedOnStateOfCard()
+    {
+        switch (mCardState)
+        {
+            case ANSWER:
+                return "Answer";
+            case QUESTION:
+                return "Question";
+        }
+        return "";
+    }
+
+    private String getValueBasedOnStateOfCard(){
+
+        if (mCard != null) {
+            switch (mCardState) {
+                case ANSWER:
+                    return mCard.getAnswer();
+                case QUESTION:
+                    return mCard.getQuestion();
+            }
+        }
+        return "";
     }
 }

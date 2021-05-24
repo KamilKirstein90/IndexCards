@@ -30,5 +30,7 @@
     <string name="navigation_trash">Trash</string>
     <string name="navigation_spam">Spam</string>
     <string name="navigation_drafts">Drafts</string>
+    <string name="switch_to_answer">Answer</string>
+    <string name="swith_to_question">Question</string>
 
 </resources>

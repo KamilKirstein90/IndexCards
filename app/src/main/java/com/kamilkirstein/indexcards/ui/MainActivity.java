@@ -24,6 +24,7 @@ import androidx.navigation.NavGraph;
 import androidx.navigation.Navigation;
 import androidx.navigation.fragment.NavHostFragment;
 
+import android.util.Log;
 import android.view.View;
 
 import android.view.Menu;
@@ -33,7 +34,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements NavController.OnDestinationChangedListener{
+public class MainActivity extends AppCompatActivity implements NavController.OnDestinationChangedListener {
 
     private FloatingActionButton fab;
     private Fragment hostFragment;
@@ -57,8 +58,7 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
     public void onDestinationChanged(@NonNull NavController controller,
                                      @NonNull NavDestination destination,
                                      @Nullable Bundle arguments) {
-        switch (destination.getId())
-        {
+        switch (destination.getId()) {
             case R.id.showIndexCardCategoriesFrg:
                 setUpBottomAppBarMainAct();
                 break;
@@ -69,34 +69,43 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
         }
     }
 
-    private void setUpBottomAppBarMainAct(){
+    private void setUpBottomAppBarMainAct() {
         fab = findViewById(R.id.fab);
         fab.setImageResource(R.drawable.ic_baseline_edit_24);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               navController.navigate(R.id.action_global_editIndexCard);
+                navController.navigate(R.id.action_global_editIndexCard);
             }
         });
     }
 
-    private void setUpBottomAppBarEditIndexCard(){
+    private void setUpBottomAppBarEditIndexCard() {
 
         fab = findViewById(R.id.fab);
         fab.setImageResource(R.drawable.ic_baseline_save_24);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(MainActivity.this, "Hier wird dann später gespeichert", Toast.LENGTH_SHORT).show();
+
+                // get with the getPrimaryNavigationFragment the latest Fragment from
+                EditIndexCardFrg frg = (EditIndexCardFrg) hostFragment.getChildFragmentManager().getPrimaryNavigationFragment();
+
+                if (frg != null) {
+                    Toast.makeText(getApplicationContext(), "Safe the Fragment", Toast.LENGTH_LONG).show();
+                    frg.safeIndexCard();
+                } else {
+                    Toast.makeText(getApplicationContext(), "EditIndexCard Fragment konnte nicht gefunden werden!", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
         tvAnswerQuestion = findViewById(R.id.bottom_app_bar_aq);
         tvAnswerQuestion.setVisibility(View.VISIBLE);
+
     }
 
-    public void setUpTextViewBottomAppbar(EditIndexCardFrg fragment)
-    {
+    public void setUpTextViewBottomAppbar(EditIndexCardFrg fragment) {
         tvAnswerQuestion.setText(fragment.getLabelBasedOnStateOfCard());
         // set the text and the onClick listener for the bottom app bar
         tvAnswerQuestion.setOnClickListener(new View.OnClickListener() {

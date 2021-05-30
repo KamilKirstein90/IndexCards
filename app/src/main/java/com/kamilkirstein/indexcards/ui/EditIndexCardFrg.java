@@ -10,6 +10,9 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +36,7 @@ import java.util.List;
  */
 public class EditIndexCardFrg extends Fragment {
 
-    //TODO Kamil Check this out for dynamicaly programfragments inside a fragment
+    //    TODO Kamil Check this out for dynamicaly programfragments inside a fragment
     //    https://stackoverflow.com/questions/16728426/android-nested-fragment-approach
 
     // TODO: Rename parameter arguments, choose names that match
@@ -45,8 +48,9 @@ public class EditIndexCardFrg extends Fragment {
     private List<IndexCardCategory> mCategories;
 
 
-    private int       mArgCardId = 0;
+    private int mArgCardId = 0;
     private EditText  etCardName;
+    private IndexCardViewModel indexCardViewModel;
     private IndexCard mCard;
 
     //TODO: create a IndexCardViewModel
@@ -85,6 +89,9 @@ public class EditIndexCardFrg extends Fragment {
         super.onCreate(savedInstanceState);
         mCategories = new ArrayList<IndexCardCategory>();
         mCard = new IndexCard();
+        //TO DO chek the id of the Fragment
+        Log.i("IDEDITFRG", String.valueOf(this.getId()));
+
     }
 
     @Override
@@ -129,8 +136,6 @@ public class EditIndexCardFrg extends Fragment {
 
         MainActivity mainAct = (MainActivity) getActivity();
         mainAct.setUpTextViewBottomAppbar(this);
-        // TODO get the main act herer to set up a tv listener
-
     }
 
     private void setUpChildFragment(){
@@ -156,6 +161,23 @@ public class EditIndexCardFrg extends Fragment {
 
     private void setUpEditTexts(@NonNull View view){
         EditText etCardName = view.findViewById(R.id.et_IndexCardName);
+        etCardName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                    mCard.setName(etCardName.getText().toString());
+
+            }
+        });
     }
 
     private void setUpSpinnerAndAdapter(@NonNull View view){
@@ -214,11 +236,24 @@ public class EditIndexCardFrg extends Fragment {
 
     // this method will be called from "outside" the fragment in the main Act over the current Fragment and then the child fragment
     public void changeQA(){
-        // first change the state
+
+        // get a the current child fragment and safe the EditTextvalue of it to the IndexCard member of the parent fragment
+        EditIndexCardFrgChild editIndexCardChildFrg  = (EditIndexCardFrgChild) getChildFragmentManager().findFragmentById(R.id.fl_editICFrgHolder);
+
+        if (editIndexCardChildFrg != null)
+        {
+            if (mCardState == StateOfCard.ANSWER)
+                mCard.setAnswer(editIndexCardChildFrg.getmEditTextValue());
+            if(mCardState == StateOfCard.QUESTION)
+                mCard.setQuestion(editIndexCardChildFrg.getmEditTextValue());
+        }
+        // change the state
+
         if(mCardState == StateOfCard.ANSWER)
             mCardState = StateOfCard.QUESTION;
         else
             mCardState = StateOfCard.ANSWER;
+
 
         EditIndexCardFrgChild newChildFrg = EditIndexCardFrgChild.newInstance(getLabelBasedOnStateOfCard(), getValueBasedOnStateOfCard());
         FragmentTransaction transaction = getChildFragmentManager()
@@ -251,5 +286,14 @@ public class EditIndexCardFrg extends Fragment {
             }
         }
         return "";
+    }
+
+    public void safeIndexCard(){
+
+        if(!checkInput())
+            return;
+
+        indexCardViewModel = new ViewModelProvider(this).get(IndexCardViewModel.class);
+        indexCardViewModel.insertIndexCard(mCard);
     }
 }

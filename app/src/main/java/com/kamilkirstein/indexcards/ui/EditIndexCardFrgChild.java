@@ -35,6 +35,12 @@ public class EditIndexCardFrgChild extends Fragment {
     private TextView tvIndexCardLabel;
     private EditText etAQInput;
 
+    public String getmEditTextValue() {
+        if (etAQInput != null && !etAQInput.getText().toString().isEmpty())
+            mEditTextValue = etAQInput.getText().toString();
+
+        return mEditTextValue;
+    }
 
     public EditIndexCardFrgChild() {
         // Required empty public constructor

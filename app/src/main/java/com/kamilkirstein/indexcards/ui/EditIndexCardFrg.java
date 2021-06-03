@@ -40,7 +40,7 @@ public class EditIndexCardFrg extends Fragment {
     //    https://stackoverflow.com/questions/16728426/android-nested-fragment-approach
 
     // TODO: Rename parameter arguments, choose names that match
-    private static final String ARG_CARD_ID = "IndexCardId";
+    public static final String ARG_CARD_ID = "IndexCardId";
 
     Spinner spinner;
     private IndexCardCategorySpinnerAdapter adapter;
@@ -120,7 +120,6 @@ public class EditIndexCardFrg extends Fragment {
         setUpEditTexts(view);
         setUpSpinnerAndAdapter(view);
 
-
         // ***************************************************** view Model to get data from the db ********************************
         viewModel = new ViewModelProvider(this).get(ShowIndexCardCategoriesViewModel.class);
         viewModel.getIndexCardCategories().observe(getViewLifecycleOwner(), new Observer<List<IndexCardCategory>>() {
@@ -133,7 +132,7 @@ public class EditIndexCardFrg extends Fragment {
                 setmCategories(indexCardCategories);
             }
         });
-
+        //TODO herer i have an bug because i reuse
         MainActivity mainAct = (MainActivity) getActivity();
         mainAct.setUpTextViewBottomAppbar(this);
     }

@@ -9,12 +9,11 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.kamilkirstein.indexcards.NavGraphDirections;
 import com.kamilkirstein.indexcards.R;
 import com.kamilkirstein.indexcards.dto.IndexCardCategory;
 
@@ -25,6 +24,8 @@ public class ShowIndexCardCategoriesFrg extends Fragment {
     private RecyclerView rvCategories;
     private IndexCardCategoryAdapter adapter;
     private ShowIndexCardCategoriesViewModel viewModel;
+    private ViewPager2 viewPager2;
+    IndexCardCollectionAdapter indexCardCollectionAdapter;
 
     @Override
     public View onCreateView(
@@ -44,17 +45,43 @@ public class ShowIndexCardCategoriesFrg extends Fragment {
         viewModel.getIndexCardCategories().observe(getViewLifecycleOwner(), new Observer<List<IndexCardCategory>>() {
             @Override
             public void onChanged(List<IndexCardCategory> indexCardCategories) {
-                    adapter.setmContainer(indexCardCategories);
-                    adapter.notifyDataSetChanged();
+                adapter.setmContainer(indexCardCategories);
+                adapter.notifyDataSetChanged();
             }
         });
 
+        // ****************************set view pager 2*******************
+        viewPager2 = view.findViewById(R.id.vp2_lastInsertedCards);
+        indexCardCollectionAdapter = new IndexCardCollectionAdapter(this);
+        viewPager2.setAdapter(indexCardCollectionAdapter);
 
         // TODO this maybe in one Method initRecyclerView:
-        rvCategories = view.findViewById(R.id.rV_showIndexCardCategories);
+        rvCategories = view.findViewById(R.id.rV_showIndexCardsWithCategories);
         adapter = new IndexCardCategoryAdapter(view.getContext());
         rvCategories.setAdapter(adapter);
         rvCategories.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
+    }
+
+    public class IndexCardCollectionAdapter extends FragmentStateAdapter {
+        public IndexCardCollectionAdapter(Fragment fragment) {
+            super(fragment);
+        }
+
+        @NonNull
+        @Override
+        public Fragment createFragment(int position) {
+            Fragment fragment = new EditIndexCardFrg();
+            Bundle args = new Bundle();
+            // Our object is just an integer :-P
+            args.putInt(EditIndexCardFrg.ARG_CARD_ID, position + 1);
+            fragment.setArguments(args);
+            return fragment;
+        }
+
+        @Override
+        public int getItemCount() {
+            return 10;
+        }
     }
 }

@@ -52,6 +52,9 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
         navController = Navigation.findNavController(viewFromHostFragment);
         navController.addOnDestinationChangedListener(this::onDestinationChanged);
 
+        tvAnswerQuestion = findViewById(R.id.bottom_app_bar_aq);
+        tvAnswerQuestion.setVisibility(View.VISIBLE);
+
     }
 
     @Override
@@ -100,8 +103,6 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
             }
         });
 
-        tvAnswerQuestion = findViewById(R.id.bottom_app_bar_aq);
-        tvAnswerQuestion.setVisibility(View.VISIBLE);
 
     }
 

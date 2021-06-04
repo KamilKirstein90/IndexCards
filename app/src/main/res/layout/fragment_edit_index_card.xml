@@ -2,73 +2,81 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/EditIndexCardMainLinearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.EditIndexCardFrg"
-    android:padding="10dp"
-    android:id="@+id/EditIndexCardMainLinearLayout">
+    android:padding="@dimen/grid_1"
+    tools:context=".ui.EditIndexCardFrg">
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cV_indexCard_header"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginEnd="10dp"
         android:shape="ring"
         app:cardCornerRadius="12dp"
-        android:layout_marginEnd="10dp"
         app:strokeColor="@color/orange"
-        app:strokeWidth="2dp"
-        >
+        app:strokeWidth="2dp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/textView"
-                style="@style/LabelText"
-                android:layout_width="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:text="@string/lbl_name"
-                android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_gravity="center">
 
-            <EditText
-                android:id="@+id/et_IndexCardName"
-                android:layout_width="84dp"
-                android:layout_height="38dp"
-                android:layout_marginStart="8dp"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/textView"
-                app:layout_constraintTop_toTopOf="parent" />
+                <TextView
+                    android:id="@+id/textView"
+                    style="@style/LabelText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/lbl_name"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <Spinner
-                android:id="@+id/sp_category"
-                android:layout_width="155dp"
+                <EditText
+                    android:id="@+id/et_IndexCardName"
+                    android:layout_width="84dp"
+                    android:layout_height="38dp"
+                    android:layout_marginStart="8dp"
+                    android:ems="10"
+                    android:inputType="textPersonName"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toEndOf="@+id/textView"
+                    app:layout_constraintTop_toTopOf="@+id/textView" />
+
+                <Spinner
+                    android:id="@+id/sp_category"
+                    android:layout_width="155dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/et_IndexCardName"
+                    app:layout_constraintTop_toTopOf="@+id/et_IndexCardName" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <FrameLayout
+                android:id="@+id/fl_editICFrgHolder"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/et_IndexCardName"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_marginTop="@dimen/grid_1"
+                android:layout_marginBottom="80dp"
+                android:layout_marginStart="@dimen/grid_1"
+                android:layout_weight="1">
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            </FrameLayout>
+
+        </LinearLayout>
+
+
     </com.google.android.material.card.MaterialCardView>
-
-    <FrameLayout
-        android:id="@+id/fl_editICFrgHolder"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_marginBottom="32dp">
-
-    </FrameLayout>
 
 
 </LinearLayout>

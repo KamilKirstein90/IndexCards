@@ -16,12 +16,15 @@
         android:layout_marginEnd="10dp"
         app:strokeColor="@color/orange"
         app:strokeWidth="2dp"
-        android:paddingHorizontal="@dimen/grid_1">
+        android:padding="@dimen/grid_0_5">
+
         <TextView
             android:id="@+id/tv_CardsWithCategoryLbl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Cards with Categories:">
+            android:text="Cards with Categories:"
+            android:textSize="24sp"
+            android:padding="@dimen/grid_0_5">
 
         </TextView>
 
@@ -30,11 +33,13 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rV_showIndexCardsWithCategories"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
+        android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_weight="0.5"/>
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cV_indexCardWithoutCategoires_header"
@@ -45,13 +50,15 @@
         android:layout_marginEnd="10dp"
         app:strokeColor="@color/orange"
         app:strokeWidth="2dp"
-        android:paddingHorizontal="@dimen/grid_1">
+        android:padding="@dimen/grid_0_5">
 
         <TextView
             android:id="@+id/tv_CardsWithOutCategoryLbl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Cards without Categories:">
+            android:text="Cards without Categories:"
+            android:textSize="24sp"
+            android:padding="@dimen/grid_0_5">
 
         </TextView>
 
@@ -59,10 +66,10 @@
 
     <include layout="@layout/item_indexcardcategory" />
 
-
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/vp2_lastInsertedCards"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_weight="2"/>
 
 </LinearLayout>

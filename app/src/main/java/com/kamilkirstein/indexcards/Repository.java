@@ -13,6 +13,7 @@ import com.kamilkirstein.indexcards.dao.IndexCardsDataBase;
 import com.kamilkirstein.indexcards.dto.IndexCard;
 import com.kamilkirstein.indexcards.dto.IndexCardCategory;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Repository {
@@ -20,6 +21,7 @@ public class Repository {
     private IndexCardDao indexCardDao;
     private LiveData<IndexCard> oneIndexCard;
     private LiveData<List<IndexCard>> allIndexCards;
+    private LiveData<List<IndexCard>> lastTenIndexCards;
 
     private IndexCardCategoryDao indexCardCategoryDao;
     private LiveData<IndexCardCategory> oneIndexCardCategory;
@@ -39,9 +41,18 @@ public class Repository {
     }
 
     public LiveData<List<IndexCard>> getAllIndexCards() {
+
+        TaskRunner runner = new TaskRunner();
+        runner.executeAsync(new queryIndexCardsTask(allIndexCards, indexCardDao));
+
         allIndexCards = indexCardDao.queryIndexCards();
         return allIndexCards;
     }
+
+    public LiveData<List<IndexCard>> getLastTenIndexCards(){
+        lastTenIndexCards = indexCardDao.queryLastTenIndexCards();
+        return lastTenIndexCards;
+    };
 
     public void insertUpdateIndexCard(IndexCard indexCard){
         // if the id of the passed IndexCard obj is > 0 this method calls a update database operation
@@ -56,6 +67,7 @@ public class Repository {
     }
 
     public LiveData<List<IndexCardCategory>> getAllIndexCardCategories() {
+
         allIndexCardCategories = indexCardCategoryDao.queryIndexCardCategories();
         return allIndexCardCategories;
     }
@@ -89,7 +101,6 @@ public class Repository {
         }
     }
 
-
     public static class insertUpdateIndexCardCategoryTask extends BaseTask<Void> {
 
         private IndexCardCategory mIndexCardCategory;
@@ -109,6 +120,24 @@ public class Repository {
             else
                 mIndexCardCategoryDao.insertIndexCardCategory(mIndexCardCategory); // here is the insert operation similar to the operation in the doInBackground class
 
+            return super.call();
+        }
+    }
+
+    public static class queryIndexCardsTask extends BaseTask<List<IndexCard>>{
+
+        private LiveData<List<IndexCard>> mIndexCards;
+        private IndexCardDao indexCardDao;
+
+        public queryIndexCardsTask(LiveData<List<IndexCard>> mIndexCards, IndexCardDao indexCardDao) {
+            this.mIndexCards = mIndexCards;
+            this.indexCardDao = indexCardDao;
+        }
+
+        @Override
+        public List<IndexCard> call() throws Exception {
+            mIndexCards = null;
+            mIndexCards = indexCardDao.queryIndexCards();
             return super.call();
         }
     }

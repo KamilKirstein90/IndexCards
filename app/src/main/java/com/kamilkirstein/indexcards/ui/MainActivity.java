@@ -7,6 +7,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.kamilkirstein.indexcards.R;
 import com.kamilkirstein.indexcards.Repository;
+import com.kamilkirstein.indexcards.dto.IndexCard;
 import com.kamilkirstein.indexcards.dto.IndexCardCategory;
 
 import androidx.annotation.NonNull;
@@ -96,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
 
                 if (frg != null) {
                     Toast.makeText(getApplicationContext(), "Safe the Fragment", Toast.LENGTH_LONG).show();
-                    frg.safeIndexCard();
+                    frg.safeIndexCard(findViewById(R.id.mainActCoordinatorLayout));
                 } else {
                     Toast.makeText(getApplicationContext(), "EditIndexCard Fragment konnte nicht gefunden werden!", Toast.LENGTH_LONG).show();
                 }

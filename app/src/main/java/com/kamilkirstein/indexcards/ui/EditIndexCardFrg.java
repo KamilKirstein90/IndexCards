@@ -22,11 +22,17 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.android.material.bottomappbar.BottomAppBar;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
+import com.kamilkirstein.indexcards.DateTypeConverter;
 import com.kamilkirstein.indexcards.R;
 import com.kamilkirstein.indexcards.dto.IndexCard;
 import com.kamilkirstein.indexcards.dto.IndexCardCategory;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -52,8 +58,10 @@ public class EditIndexCardFrg extends Fragment {
     private EditText  etCardName;
     private IndexCardViewModel indexCardViewModel;
     private IndexCard mCard;
+    private View mRootView;
+    private EditIndexCardFrgChild childFrg;
+    private boolean mBUndo = false;
 
-    //TODO: create a IndexCardViewModel
     private Button btnSave;
     private Button btnSwitch;
     private StateOfCard mCardState = StateOfCard.QUESTION;
@@ -97,10 +105,10 @@ public class EditIndexCardFrg extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_edit_index_card, container, false);
-        
+         mRootView = inflater.inflate(R.layout.fragment_edit_index_card, container, false);
+
         setUpChildFragment();
-        return rootView;
+        return mRootView;
     }
 
     @Override
@@ -110,28 +118,13 @@ public class EditIndexCardFrg extends Fragment {
         // ************************************************** Test for Args *******************************************************
         if (getArguments() != null && savedInstanceState != null) {
             mArgCardId = savedInstanceState.getInt(ARG_CARD_ID);
-
-            if (mArgCardId > 0)
-            {
-                // if this is right I will get index card for the id from the db and the fragment is for editing a consisting index card
-            }
         }
 
         setUpEditTexts(view);
         setUpSpinnerAndAdapter(view);
+        setUpModels();
 
-        // ***************************************************** view Model to get data from the db ********************************
-        viewModel = new ViewModelProvider(this).get(ShowIndexCardCategoriesViewModel.class);
-        viewModel.getIndexCardCategories().observe(getViewLifecycleOwner(), new Observer<List<IndexCardCategory>>() {
-            @Override
-            public void onChanged(List<IndexCardCategory> indexCardCategories) {
 
-                // in here we pass the container from the db to the adapter
-                adapter.setmContainer(indexCardCategories);
-                adapter.notifyDataSetChanged();
-                setmCategories(indexCardCategories);
-            }
-        });
         //TODO herer i have an bug because i reuse
         MainActivity mainAct = (MainActivity) getActivity();
         mainAct.setUpTextViewBottomAppbar(this);
@@ -143,23 +136,24 @@ public class EditIndexCardFrg extends Fragment {
         mCardState = StateOfCard.QUESTION;
 
         // check if there is already a child fragment
-        EditIndexCardFrgChild editIndexCardChildFrg  = (EditIndexCardFrgChild) getChildFragmentManager().findFragmentById(R.id.fl_editICFrgHolder);
+        childFrg   = (EditIndexCardFrgChild) getChildFragmentManager().findFragmentById(R.id.fl_editICFrgHolder);
 
         // add the child fragment to the frame layout
-        if (null == editIndexCardChildFrg) {
+        if (null == childFrg) {
 
-            editIndexCardChildFrg = EditIndexCardFrgChild.newInstance(getLabelBasedOnStateOfCard(), getValueBasedOnStateOfCard());
+            childFrg = EditIndexCardFrgChild.newInstance(getLabelBasedOnStateOfCard(), getValueBasedOnStateOfCard());
             FragmentTransaction transaction = getChildFragmentManager()
                     .beginTransaction();
 
-            transaction.add(R.id.fl_editICFrgHolder, editIndexCardChildFrg)
+            transaction.add(R.id.fl_editICFrgHolder, childFrg)
                     .addToBackStack(null).commit();
         }
 
     }
 
     private void setUpEditTexts(@NonNull View view){
-        EditText etCardName = view.findViewById(R.id.et_IndexCardName);
+
+        etCardName = view.findViewById(R.id.et_IndexCardName);
         etCardName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -212,12 +206,6 @@ public class EditIndexCardFrg extends Fragment {
             return false;
         }
 
-        if(mCard.getCategoryId() == 0)
-        {
-            Toast.makeText(getContext(), "Please choose a card category.", Toast.LENGTH_LONG).show();
-            return false;
-        }
-
         if(mCard.getQuestion().isEmpty())
         {
             Toast.makeText(getContext(), "Please set a Question.", Toast.LENGTH_LONG).show();
@@ -237,14 +225,14 @@ public class EditIndexCardFrg extends Fragment {
     public void changeQA(){
 
         // get a the current child fragment and safe the EditTextvalue of it to the IndexCard member of the parent fragment
-        EditIndexCardFrgChild editIndexCardChildFrg  = (EditIndexCardFrgChild) getChildFragmentManager().findFragmentById(R.id.fl_editICFrgHolder);
+         childFrg  = (EditIndexCardFrgChild) getChildFragmentManager().findFragmentById(R.id.fl_editICFrgHolder);
 
-        if (editIndexCardChildFrg != null)
+        if (childFrg != null)
         {
             if (mCardState == StateOfCard.ANSWER)
-                mCard.setAnswer(editIndexCardChildFrg.getmEditTextValue());
+                mCard.setAnswer(childFrg.getmEditTextValue());
             if(mCardState == StateOfCard.QUESTION)
-                mCard.setQuestion(editIndexCardChildFrg.getmEditTextValue());
+                mCard.setQuestion(childFrg.getmEditTextValue());
         }
         // change the state
 
@@ -287,12 +275,92 @@ public class EditIndexCardFrg extends Fragment {
         return "";
     }
 
-    public void safeIndexCard(){
+    public void safeIndexCard(View MaActivityView){
 
         if(!checkInput())
             return;
+        // TODO first show snackbar only to notificate the user that he created a card without categroy
+        // in the future it should be a dialog that ask if the user realy want to create a card without a category
+        if(mCard.getCategoryId() == 0)
+        {
+            if (mRootView == null) {
+                Toast.makeText(getContext(), "Root View Is null.", Toast.LENGTH_LONG).show();
+                return;
+            }
+            // get the fab to set snackbar.setAnchorView(fab); to show the snackbar always over the fab
+            FloatingActionButton fab = MaActivityView.findViewById(R.id.fab);
+            Snackbar mySnackbar = Snackbar.make(MaActivityView, "Save a card without choosing a category.", Snackbar.LENGTH_LONG);
+
+            mySnackbar.setAnchorView(fab);
+            mySnackbar.setAction("UNDO", new MyUndoListener());
+
+            if ( mySnackbar != null)
+                mySnackbar.show();
+
+            if (mBUndo)
+                return;
+        }
+
+        Toast.makeText(getContext(), "Please choose a card category.", Toast.LENGTH_LONG).show();
+        // set current timestamp for index card
+        Date ts = new Date(System.currentTimeMillis());
+        // use the DateTypeConverter class and the static method to convert the current ts to string and write it to the index card
+        mCard.setTimeStamp(DateTypeConverter.dateToString(ts));
+
+        indexCardViewModel.insertIndexCard(mCard);
+    }
+
+    public class MyUndoListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            Toast.makeText(getContext(), "Test UNDO.", Toast.LENGTH_LONG).show();
+            mBUndo = true;
+        }
+    }
+
+    //TODO setup the models for one index card and for the list of indexcardsCategoreis
+    private void setUpModels(){
+
+        viewModel = new ViewModelProvider(this).get(ShowIndexCardCategoriesViewModel.class);
+        viewModel.getIndexCardCategories().observe(getViewLifecycleOwner(), new Observer<List<IndexCardCategory>>() {
+            @Override
+            public void onChanged(List<IndexCardCategory> indexCardCategories) {
+
+                // in here we pass the container from the db to the adapter
+                adapter.setmContainer(indexCardCategories);
+                adapter.notifyDataSetChanged();
+                setmCategories(indexCardCategories);
+            }
+        });
 
         indexCardViewModel = new ViewModelProvider(this).get(IndexCardViewModel.class);
-        indexCardViewModel.insertIndexCard(mCard);
+        indexCardViewModel.readIndexCard(mArgCardId).observe(getViewLifecycleOwner(), new Observer<IndexCard>() {
+            @Override
+            public void onChanged(IndexCard indexCard) {
+                Toast.makeText(getContext(), String.valueOf(mArgCardId), Toast.LENGTH_SHORT).show();
+                Log.d("CARDID", String.valueOf(mArgCardId));
+                if (indexCard != null)
+                {
+                    mCard = indexCard;
+                    etCardName.setText(indexCard.getName());
+                    // set the value of the Answer or Question
+                    switch (mCardState)
+                    {
+                        case ANSWER:
+                            childFrg.setmEditTextValue(indexCard.getAnswer());
+                        case QUESTION:
+                            childFrg.setmEditTextValue(indexCard.getQuestion());
+                    }
+
+                }
+
+
+            }
+        });
+        
+
+        //
+
     }
 }

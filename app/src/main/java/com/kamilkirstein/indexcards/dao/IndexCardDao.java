@@ -24,8 +24,11 @@ public interface IndexCardDao {
     @Query ("SELECT * FROM indexcard_table")
     LiveData<List<IndexCard>> queryIndexCards();
 
-    // read one index card
+    @Query ("SELECT * FROM indexcard_table ORDER BY id DESC LIMIT 10")
+    LiveData<List<IndexCard>> queryLastTenIndexCards();
+
     @Query ("SELECT * FROM indexcard_table WHERE id = :id")
     LiveData<IndexCard> readIndexCard(@NonNull int id);
+
 
 }

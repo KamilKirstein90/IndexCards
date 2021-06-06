@@ -4,9 +4,12 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 
 import com.kamilkirstein.indexcards.Repository;
 import com.kamilkirstein.indexcards.dto.IndexCard;
+
+import java.util.List;
 
 public class IndexCardViewModel extends AndroidViewModel {
 
@@ -20,4 +23,17 @@ public class IndexCardViewModel extends AndroidViewModel {
     public void insertIndexCard(IndexCard card){
         mRepository.insertUpdateIndexCard(card);
     }
+
+    public LiveData<IndexCard> readIndexCard(int id){
+        return mRepository.getOneIndexCard(id);
+    }
+
+    public LiveData<List<IndexCard>> queryAllIndexCards(){
+        return mRepository.getAllIndexCards();
+    }
+
+    public LiveData<List<IndexCard>> queryLastTenIndexCards(){
+        return mRepository.getLastTenIndexCards();
+    }
+
 }

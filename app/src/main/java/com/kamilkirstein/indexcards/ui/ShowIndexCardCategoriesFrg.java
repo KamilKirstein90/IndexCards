@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -41,7 +42,7 @@ public class ShowIndexCardCategoriesFrg extends Fragment {
             Bundle savedInstanceState
     ) {
         // Inflate the layout for this fragment
-        setUpViewModels();
+
         return inflater.inflate(R.layout.fragment_show_card_categories, container, false);
     }
 
@@ -60,50 +61,61 @@ public class ShowIndexCardCategoriesFrg extends Fragment {
         adapter = new IndexCardCategoryAdapter(view.getContext());
         rvCategories.setAdapter(adapter);
         rvCategories.setLayoutManager(new LinearLayoutManager(view.getContext()));
+
+        setUpViewModels();
     }
 
     public class IndexCardCollectionAdapter extends FragmentStateAdapter {
 
-        // TODO List of index Cards as member
-        List<IndexCard> container;
-
-        public void setContainer(List<IndexCard> container) {
-            this.container = container;
-        }
-
+        List<EditIndexCardFrg> frgContainer = new ArrayList<EditIndexCardFrg>();
         public IndexCardCollectionAdapter(Fragment fragment) {
             super(fragment);
+        }
+
+        public void setFrgContainer(List<EditIndexCardFrg> frgContainer) {
+            this.frgContainer = frgContainer;
         }
 
         @NonNull
         @Override
         public Fragment createFragment(int position) {
-            Toast.makeText(getContext(), "ID aus Container: " + String.valueOf(container.get(position).getId()), Toast.LENGTH_SHORT).show();
-            return EditIndexCardFrg.newInstance(container.get(position).getId());
-           /* Fragment fragment = new EditIndexCardFrg();
-            Bundle args = new Bundle();
-            // Our object is just an integer :-P
-            args.putInt(EditIndexCardFrg.ARG_CARD_ID, container.get(position).getId());
-            fragment.setArguments(args);
-            return fragment;
-            */
-
+                Toast.makeText(getContext(),"Welche ID hat das Fragment beim erstellen: "+ String.valueOf(frgContainer.get(position).getArguments().getInt(EditIndexCardFrg.ARG_CARD_ID)),Toast.LENGTH_LONG).show();
+                return frgContainer.get(position);
+            // else return a new fragment with the right id;
         }
 
         @Override
         public int getItemCount() {
-            if(container !=null)
-                return container.size();
-
-            return 10;
+                return frgContainer.size();
         }
+        @Override
+        public boolean containsItem(long itemId) {
+
+            for (EditIndexCardFrg frg : frgContainer)
+            {
+                if ((long) frg.getArguments().getInt(EditIndexCardFrg.ARG_CARD_ID) == itemId )
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            if(position >= getItemCount() || position < 0)
+                return RecyclerView.NO_ID;
+
+            return (long) frgContainer.get(position).getArguments().getInt(EditIndexCardFrg.ARG_CARD_ID);
+        }
+
     }
+
     // this view model gets the latest 10
-    public void setUpViewModels(){
-        // viewmodel for the categories
-        // Notice! the ViewModelProviders.of is debricated insted use :
+    public void  setUpViewModels(){
+
+        // viewModel for categories:
         viewModel = new ViewModelProvider(this).get(ShowIndexCardCategoriesViewModel.class);
-        //TODO check why here getViewLifeyclerOwner insted of this as owner
         viewModel.getIndexCardCategories().observe(getViewLifecycleOwner(), new Observer<List<IndexCardCategory>>() {
             @Override
             public void onChanged(List<IndexCardCategory> indexCardCategories) {
@@ -112,34 +124,29 @@ public class ShowIndexCardCategoriesFrg extends Fragment {
             }
         });
 
-        // indxCardViewModel for the ten latest cards
+        // viewModel for index cards:
         indexCardViewModel = new ViewModelProvider(this).get(IndexCardViewModel.class);
-        indexCardViewModel.queryAllIndexCards().observe(getViewLifecycleOwner(), new Observer<List<IndexCard>>() {
-            @Override
-            public void onChanged(List<IndexCard> indexCards) {
-                if(indexCards == null)
-                {
-                    Log.i("INDEXCARDASLIST", "abfrage ergibt eine null liste");
-                    indexCards = new ArrayList<IndexCard>();
-                }
-
-                mIndexCards = indexCards;
-                indexCardCollectionAdapter.setContainer(mIndexCards);
-                //indexCardCollectionAdapter.notifyDataSetChanged();
-            }
-        });
-       /*
         indexCardViewModel.queryLastTenIndexCards().observe(getViewLifecycleOwner(), new Observer<List<IndexCard>>() {
             @Override
             public void onChanged(List<IndexCard> indexCards) {
-                if(indexCards == null)
-                    indexCards = new ArrayList<IndexCard>();
 
                 mIndexCards = indexCards;
-                indexCardCollectionAdapter.setContainer(mIndexCards);
+                List<EditIndexCardFrg> listOfFragments = new ArrayList<EditIndexCardFrg>();
+
+                if(indexCards.size() >0)
+                    for(IndexCard card :indexCards)
+                    {
+                        EditIndexCardFrg newfragment = EditIndexCardFrg.newInstance(card.getId());
+                        Toast.makeText(getContext(),"setnewindex"+String.valueOf(newfragment.getArguments().getInt(EditIndexCardFrg.ARG_CARD_ID)),Toast.LENGTH_LONG ).show();
+                        listOfFragments.add(newfragment);
+                    }
+
+                indexCardCollectionAdapter.setFrgContainer(listOfFragments);
                 indexCardCollectionAdapter.notifyDataSetChanged();
             }
         });
-        */
+
     }
+
+
 }

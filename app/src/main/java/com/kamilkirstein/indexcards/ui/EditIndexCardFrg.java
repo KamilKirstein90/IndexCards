@@ -59,6 +59,15 @@ public class EditIndexCardFrg extends Fragment {
     private IndexCardViewModel indexCardViewModel;
     private IndexCard mCard;
     private View mRootView;
+
+    public int getmArgCardId() {
+        return mArgCardId;
+    }
+
+    public void setmArgCardId(int mArgCardId) {
+        this.mArgCardId = mArgCardId;
+    }
+
     private EditIndexCardFrgChild childFrg;
     private boolean mBUndo = false;
 
@@ -79,6 +88,7 @@ public class EditIndexCardFrg extends Fragment {
     public static EditIndexCardFrg newInstance(int indexCardId) {
         EditIndexCardFrg fragment = new EditIndexCardFrg();
         Bundle args = new Bundle();
+       // fragment.setmArgCardId(indexCardId);
         args.putInt(ARG_CARD_ID, indexCardId);
         fragment.setArguments(args);
         return fragment;
@@ -97,8 +107,10 @@ public class EditIndexCardFrg extends Fragment {
         super.onCreate(savedInstanceState);
         mCategories = new ArrayList<IndexCardCategory>();
         mCard = new IndexCard();
-        //TO DO chek the id of the Fragment
-        Log.i("IDEDITFRG", String.valueOf(this.getId()));
+        if (getArguments() != null ) {
+            //Toast.makeText(getContext(), "Hier wird mArgCardID gesetzt auf: "+ String.valueOf(savedInstanceState.getInt(ARG_CARD_ID)), Toast.LENGTH_SHORT).show();
+             mArgCardId = getArguments() .getInt(ARG_CARD_ID);
+        }
 
     }
 
@@ -116,16 +128,12 @@ public class EditIndexCardFrg extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // ************************************************** Test for Args *******************************************************
-        if (getArguments() != null && savedInstanceState != null) {
-            mArgCardId = savedInstanceState.getInt(ARG_CARD_ID);
-        }
+
 
         setUpEditTexts(view);
         setUpSpinnerAndAdapter(view);
         setUpModels();
 
-
-        //TODO herer i have an bug because i reuse
         MainActivity mainAct = (MainActivity) getActivity();
         mainAct.setUpTextViewBottomAppbar(this);
     }
@@ -338,8 +346,8 @@ public class EditIndexCardFrg extends Fragment {
         indexCardViewModel.readIndexCard(mArgCardId).observe(getViewLifecycleOwner(), new Observer<IndexCard>() {
             @Override
             public void onChanged(IndexCard indexCard) {
-                Toast.makeText(getContext(), String.valueOf(mArgCardId), Toast.LENGTH_SHORT).show();
-                Log.d("CARDID", String.valueOf(mArgCardId));
+                Toast.makeText(getContext(), "ID in Fragment " + String.valueOf(mArgCardId), Toast.LENGTH_SHORT).show();
+
                 if (indexCard != null)
                 {
                     mCard = indexCard;

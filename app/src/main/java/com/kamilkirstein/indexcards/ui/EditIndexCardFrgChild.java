@@ -43,7 +43,6 @@ public class EditIndexCardFrgChild extends Fragment {
         {
             etAQInput.setText(mEditTextValue);
         }
-
     }
 
     public String getmEditTextValue() {

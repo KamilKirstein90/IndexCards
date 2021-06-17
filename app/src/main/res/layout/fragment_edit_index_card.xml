@@ -17,7 +17,6 @@
         android:layout_marginEnd="10dp"
         android:shape="ring"
         app:cardCornerRadius="12dp"
-        app:strokeColor="@color/orange"
         app:strokeWidth="2dp">
 
         <LinearLayout

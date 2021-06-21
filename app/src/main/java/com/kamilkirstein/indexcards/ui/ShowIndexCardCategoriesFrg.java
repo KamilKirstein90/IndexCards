@@ -32,7 +32,6 @@ public class ShowIndexCardCategoriesFrg extends Fragment {
     private ViewPager2 viewPager2;
     IndexCardCollectionAdapter indexCardCollectionAdapter;
 
-
     private IndexCardViewModel indexCardViewModel;
     private List<IndexCard> mIndexCards;
 
@@ -42,7 +41,6 @@ public class ShowIndexCardCategoriesFrg extends Fragment {
             Bundle savedInstanceState
     ) {
         // Inflate the layout for this fragment
-
         return inflater.inflate(R.layout.fragment_show_card_categories, container, false);
     }
 
@@ -55,6 +53,14 @@ public class ShowIndexCardCategoriesFrg extends Fragment {
         viewPager2 = view.findViewById(R.id.vp2_lastInsertedCards);
         indexCardCollectionAdapter = new IndexCardCollectionAdapter(this);
         viewPager2.setAdapter(indexCardCollectionAdapter);
+
+        // TODO this is not the solution that I wanted but
+        // https://stackoverflow.com/questions/10098040/android-viewpager-show-preview-of-page-on-left-and-right here is the solution to consider
+        viewPager2.setClipToPadding(false);
+        viewPager2.setPadding(10,0,10,0);
+
+        // to see the next and previ card ahead
+
 
         // ****************************set recycler view*************************
         rvCategories = view.findViewById(R.id.rV_showIndexCardsWithCategories);

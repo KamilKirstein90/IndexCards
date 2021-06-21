@@ -8,4 +8,15 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="lblTextGrey">@color/black</color>
+
+
+    <color name="colorAppbars_darktheme">#00072d</color>
+    <color name="colorAppBackground_darktheme">#001c55</color>0e6ba8
+    <color name="colorAppItems_darktheme">#0e6ba8</color>
+    <color name="colorPrimary_darktheme">#001c55</color>
+    <color name= "colorPirmaryVariant_darktheme">#0B5484</color>
+    <color name="colorSecondary_darktheme">#a6e1fa</color>
+    <color name="colorSecondaryVariant_darktheme">#8BD8F8</color>
+
+
 </resources>

@@ -73,6 +73,8 @@ public class MainActivity extends AppCompatActivity implements NavController.OnD
         }
     }
 
+    //TODO found a solution for handle the on backPressed method in fragments  https://stackoverflow.com/questions/51043428/handling-back-button-in-android-navigation-component
+
     private void setUpBottomAppBarMainAct() {
         fab = findViewById(R.id.fab);
         fab.setImageResource(R.drawable.ic_baseline_edit_24);

@@ -12,8 +12,6 @@
         android:layout_height="wrap_content"
         android:shape="ring"
         app:cardCornerRadius="12dp"
-        app:strokeColor="@color/orange"
-        app:strokeWidth="2dp"
         >
 
     <TextView

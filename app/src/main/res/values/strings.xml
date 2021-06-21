@@ -32,5 +32,9 @@
     <string name="navigation_drafts">Drafts</string>
     <string name="switch_to_answer">Answer</string>
     <string name="swith_to_question">Question</string>
+    <string name="text_headline_6">Headline6</string>
+    <string name="app_bar_menu_share">Share</string>
+    <string name="app_bar_menu_bookmark">Bookmark</string>
+    <string name="app_bar_menu_search">Search</string>
 
 </resources>

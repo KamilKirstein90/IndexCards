@@ -23,96 +23,93 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimary_darktheme"
             android:paddingBottom="@dimen/grid_0_5"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <LinearLayout
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:backgroundTint="@color/colorPrimary_darktheme">
+
+                <TextView
+                    android:id="@+id/tV_CategoryNameLbl"
+                    style="@style/LabelText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/lbl_name"
+                    android:textSize="10sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"></TextView>
+
+                <TextView
+                    android:id="@+id/tV_CategoryNameValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:textSize="34sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tV_CategoryNameLbl"></TextView>
 
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                <Button
+                    android:id="@+id/btn_showCards"
+                    style="?materialButtonOutlinedStyle"
+                    android:layout_width="130dp"
+                    android:layout_height="45dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:text="Show Cards"
+                    android:textColor="@color/colorSecondary_darktheme"
+                    android:textSize="12sp"
+                    app:iconTint="@color/colorSecondary_darktheme"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"></Button>
 
-                    <TextView
-                        android:id="@+id/tV_CategoryNameLbl"
-                        style="@style/LabelText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:text="@string/lbl_name"
-                        android:textSize="18sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"></TextView>
+                <TextView
+                    android:id="@+id/tV_AmountOfCardsLbl"
+                    style="@style/LabelText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="Amount of cards:"
+                    android:textSize="16sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tV_CategoryNameValue"></TextView>
 
-                    <TextView
-                        android:id="@+id/tV_CategoryNameValue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:textSize="12sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/btn_showCards"
-                        app:layout_constraintStart_toEndOf="@+id/tV_CategoryNameLbl"
-                        app:layout_constraintTop_toTopOf="parent"></TextView>
+                <TextView
+                    android:id="@+id/tV_AmountOfCardsValue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/tV_AmountOfCardsLbl"
+                    app:layout_constraintStart_toEndOf="@+id/tV_AmountOfCardsLbl"
+                    app:layout_constraintTop_toTopOf="@+id/tV_AmountOfCardsLbl"></TextView>
 
-                    <Button
-                        android:id="@+id/btn_showCards"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
-                        android:text="Show Cards"
-                        android:textSize="12sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"></Button>
+                <Button
+                    android:id="@+id/btn_playQuiz"
+                    style="?materialButtonOutlinedStyle"
+                    android:layout_width="130dp"
+                    android:layout_height="49dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:text="Quiz"
+                    android:textColor="@color/colorSecondary_darktheme"
+                    android:textSize="12sp"
+                    app:iconTint="@color/colorSecondary_darktheme"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/btn_showCards"></Button>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <TextView
-                        android:id="@+id/tV_AmountOfCardsLbl"
-                        style="@style/LabelText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:text="Amount of cards:"
-                        android:textSize="18sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"></TextView>
-
-                    <TextView
-                        android:id="@+id/tV_AmountOfCardsValue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:textSize="12sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toStartOf="@+id/btn_playQuiz"
-                        app:layout_constraintStart_toEndOf="@+id/tV_AmountOfCardsLbl"
-                        app:layout_constraintTop_toTopOf="parent"></TextView>
-
-                    <Button
-                        android:id="@+id/btn_playQuiz"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
-                        android:text="Quiz"
-                        android:textSize="12sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"></Button>
-                </androidx.constraintlayout.widget.ConstraintLayout>
-            </LinearLayout>
 
         </androidx.cardview.widget.CardView>
     </com.google.android.material.card.MaterialCardView>
